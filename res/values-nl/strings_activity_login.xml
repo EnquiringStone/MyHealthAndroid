@@ -1,0 +1,16 @@
+<resources>
+
+    <string name="title_activity_login">Sign in</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_username">Gebruikersnaam</string>
+    <string name="prompt_password">Wachtwoord</string>
+    <string name="action_sign_in_short">Log in</string>
+    <string name="login_progress_signing_in">Even geduld aub&#8230;</string>
+    <string name="error_invalid_username">Deze gebruikersnaam is onjuist</string>
+    <string name="error_invalid_password">Dit wachtwoord is te kort</string>
+    <string name="error_old_password">Verander alstublieft het wachtwoord op de website</string>
+    <string name="error_incorrect_password">Dit wachtwoord is onjuist</string>
+    <string name="error_field_required">Dit veld is verplicht</string>
+
+</resources>

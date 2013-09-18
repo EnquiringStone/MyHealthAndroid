@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">MyHealthApp</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="logout">Log out</string>
+    <string name="measurements">Measurements</string>
+    <string name="urinetest">Urine test</string>
+    <string name="title_activity_menu">MenuActivity</string>
+    <string name="title_activity_measurements">MeasurementsActivity</string>
+    <string name="title_activity_urinetest">UrinetestActivity</string>
+
+</resources>
