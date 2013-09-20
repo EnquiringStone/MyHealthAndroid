@@ -24,6 +24,7 @@ public class MenuActivity extends Activity {
 	public void goToLoginActivity(View view){
 		Intent intent = new Intent(MenuActivity.this, LoginActivity.class);
 		MenuActivity.this.startActivity(intent);
+		finish();
 	}
 	
 	public void goToMeasurementsActivity(View view){
