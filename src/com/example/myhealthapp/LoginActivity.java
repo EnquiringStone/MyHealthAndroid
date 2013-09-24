@@ -53,7 +53,6 @@ public class LoginActivity extends Activity {
 					}
 				});
 
-
 		findViewById(R.id.sign_in_button).setOnClickListener(
 				new View.OnClickListener() {
 					@Override
@@ -74,9 +73,9 @@ public class LoginActivity extends Activity {
 		String username = mUsernameView.getText().toString();
 		String password = mPasswordView.getText().toString();
 		String host = mHostView.getText().toString();
-		if(!(host.equals(""))){
+		if (!(host.equals(""))) {
 			requestHandler.host = host;
-		}		
+		}
 		String url = "";
 		String name = "user";
 		String method = "login";
@@ -100,45 +99,59 @@ public class LoginActivity extends Activity {
 				.append("&password=").append(password);
 
 		url = urlbuffer.toString();
-		handler.setURL(url);		
+		handler.setURL(url);
 		requestHandler.running_flag = true;
 		handler.runrequest();
 
 		Boolean act = true;
 		while (act) {
-			if (!requestHandler.running_flag && !requestHandler.failed) {
-				Log.i("DEBUG", "Start handling loginrequest results and runningflag = " + requestHandler.running_flag);
-				
-				Map<String, String> JsonValues = requestHandler
-						.parseJson();
-				if (JsonValues.get("error").equals("false")
-						&& JsonValues.get("login_token").length() > 3) {
+			if (!requestHandler.running_flag) {
+				if (!requestHandler.failed) {
+					Log.i("DEBUG",
+							"Start handling loginrequest results and runningflag = "
+									+ requestHandler.running_flag);
 
-					requestHandler.token = JsonValues.get("login_token");
-					Log.i("Token", requestHandler.token);
-					Intent myIntent = new Intent(v.getContext(),
-							MenuActivity.class);
-					Toast.makeText(LoginActivity.this, "Login Successful",
-							Toast.LENGTH_LONG).show();
-					startActivityForResult(myIntent, 0);
-				} else if (JsonValues.get("error").equals("true")) {
-					Toast.makeText(LoginActivity.this,
-							JsonValues.get("message"), Toast.LENGTH_LONG)
-							.show();
-				} else {
-					Toast.makeText(LoginActivity.this, "Something went wrong",
-							Toast.LENGTH_LONG).show();
+					Map<String, String> JsonValues = requestHandler.parseJson();
+					if (JsonValues.get("error").equals("false")
+							&& JsonValues.get("login_token").length() > 3) {
+						Log.i("DEBUG", "Generating token");
+						requestHandler.token = JsonValues.get("login_token");
+						Intent myIntent = new Intent(v.getContext(),
+								MenuActivity.class);
+						Toast.makeText(LoginActivity.this, "Login Successful",
+								Toast.LENGTH_LONG).show();
+						startActivityForResult(myIntent, 0);
+					} else if (JsonValues.get("error").equals("true")) {
+						Log.i("DEBUG", "Display error message");
+						Toast.makeText(LoginActivity.this,
+								JsonValues.get("message"), Toast.LENGTH_LONG)
+								.show();
+					} else {
+						Log.i("DEBUG",
+								"error value = " + JsonValues.get("error"));
+						Toast.makeText(LoginActivity.this,
+								"Something went wrong :(", Toast.LENGTH_LONG)
+								.show();
+					}
+
+					act = false;
+
+				} else if (requestHandler.failed) {
+					act = false;
+
+					try {
+						Map<String, String> JsonValues = requestHandler.parseJson();
+						Toast.makeText(LoginActivity.this,
+								JsonValues.get("message"), Toast.LENGTH_LONG)
+								.show();
+					} catch (Exception e) {
+						Toast.makeText(LoginActivity.this,
+								"Something went wrong", Toast.LENGTH_LONG)
+								.show();
+					}
 				}
 
-				act = false;
-
 			}
-			else if(!requestHandler.running_flag && requestHandler.failed){
-				act = false;
-				Toast.makeText(LoginActivity.this, "Something went wrong",
-						Toast.LENGTH_LONG).show();
-			}
-
 		}
 	}
 

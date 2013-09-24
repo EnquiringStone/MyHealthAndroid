@@ -77,7 +77,6 @@ public class requestHandler {
 		out.close();
 		requestHandler.response = out.toString();
 		if (statusLine.getStatusCode() != HttpStatus.SC_OK) {
-
 			response.getEntity().getContent().close();
 		}
 	}
