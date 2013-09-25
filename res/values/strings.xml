@@ -9,5 +9,6 @@
     <string name="title_activity_menu">MenuActivity</string>
     <string name="title_activity_measurements">MeasurementsActivity</string>
     <string name="title_activity_urinetest">UrinetestActivity</string>
+    <string name="Host">Host</string>
 
 </resources>
