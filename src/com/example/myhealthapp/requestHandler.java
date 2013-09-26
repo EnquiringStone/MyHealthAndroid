@@ -15,6 +15,8 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import com.example.myhealthapp.conn.MySSLSocketFactory;
+
 import android.util.Base64;
 
 public class requestHandler {
@@ -68,7 +70,7 @@ public class requestHandler {
 	}
 
 	public void callWebService() throws IOException {		
-		HttpClient httpclient = new DefaultHttpClient();
+		HttpClient httpclient = MySSLSocketFactory.getNewHttpClient();
 		HttpResponse response = httpclient.execute(new HttpGet(
 				requestHandler.url));
 		StatusLine statusLine = response.getStatusLine();

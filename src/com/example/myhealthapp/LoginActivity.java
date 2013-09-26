@@ -39,6 +39,8 @@ public class LoginActivity extends Activity {
 		mUsernameView = (EditText) findViewById(R.id.username);
 		mPasswordView = (EditText) findViewById(R.id.password);
 		mHostView = (EditText) findViewById(R.id.host);
+		
+		mHostView.setText(requestHandler.host);
 
 		mPasswordView
 				.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -72,10 +74,8 @@ public class LoginActivity extends Activity {
 	public void attemptLogin(View v) {
 		String username = mUsernameView.getText().toString();
 		String password = mPasswordView.getText().toString();
-		String host = mHostView.getText().toString();
-		if (!(host.equals(""))) {
-			requestHandler.host = host;
-		}
+		requestHandler.host = mHostView.getText().toString();
+				
 		String url = "";
 		String name = "user";
 		String method = "login";
