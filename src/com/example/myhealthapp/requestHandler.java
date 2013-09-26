@@ -13,73 +13,58 @@ import org.apache.http.HttpStatus;
 import org.apache.http.StatusLine;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
 
 import com.example.myhealthapp.conn.MySSLSocketFactory;
 
+import android.os.AsyncTask;
 import android.util.Base64;
 
-public class requestHandler {
+public class RequestHandler extends AsyncTask<String, Void, Boolean> {
 
-	static URI url = null;
-	static String host = "http://145.37.72.146:1234";
-	static String params = "";
-	static String response = "";
-	static Boolean running_flag = false;
-	static String token = "";
-	static boolean failed;
+	URI url = null;
+	String host = "https://145.37.72.146:1234";
+	String params = "";
+	String response = "";
+	Boolean running_flag = false;
+	String token = "";
 
-	Thread thread = new Thread(new Runnable() {
-		@Override
-		public void run() {
-			try {
-				failed = false;
-				callWebService();
-			} catch (Exception e) {
-				failed = true;
-				e.printStackTrace();
-			} finally {
-				requestHandler.running_flag = false;
-				interupt();
-			}
-		}
-	});
-
-	public void runrequest() {
-		thread.start();
+	public RequestHandler(){
+		try {
+            Class.forName("android.os.AsyncTask");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
 	}
 
-	protected void interupt() {
-		thread.interrupt();
-	}
-	
 	public void setHost(String host) {
-		requestHandler.host = host;
+		this.host = host;
 	}
 
 	public void setURL(String apiUrl) {
 		try {
-			requestHandler.url = new URI(apiUrl);
+			this.url = new URI(apiUrl);
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
 		}
 	}
 
-		public void setParams(String params) {
-		requestHandler.params = params;
+	public void setParams(String params) {
+		this.params = params;
 	}
 
-	public void callWebService() throws IOException {		
+	public void callWebService() throws IOException {
 		HttpClient httpclient = MySSLSocketFactory.getNewHttpClient();
-		HttpResponse response = httpclient.execute(new HttpGet(
-				requestHandler.url));
+		HttpResponse response = httpclient.execute(new HttpGet(this.url));
 		StatusLine statusLine = response.getStatusLine();
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		response.getEntity().writeTo(out);
 		out.close();
-		requestHandler.response = out.toString();
+		this.response = out.toString();
+		this.setRunning_flag(false);
 		if (statusLine.getStatusCode() != HttpStatus.SC_OK) {
 			response.getEntity().getContent().close();
+			this.response = out.toString();
+			this.setRunning_flag(false);
 		}
 	}
 
@@ -87,9 +72,9 @@ public class requestHandler {
 		return Base64.encodeToString(value.getBytes("UTF-8"), Base64.NO_WRAP);
 	}
 
-	public static Map<String, String> parseJson() {
-		String[] splits = response.toString()
-				.substring(1, response.toString().length() - 1).split(",");
+	public Map<String, String> parseJson() {
+		String[] splits = this.response.toString()
+				.substring(1, this.response.toString().length() - 1).split(",");
 		Map<String, String> JsonValues = new HashMap<String, String>();
 		for (String split : splits) {
 			JsonValues.put(split.split(":")[0].replaceAll("\"", ""),
@@ -97,4 +82,41 @@ public class requestHandler {
 		}
 		return JsonValues;
 	}
+
+	@Override
+	protected Boolean doInBackground(String... arg0) {
+		try {
+			callWebService();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return true;
+	}
+
+	public void setRunning_flag(boolean running_flag) {
+		this.running_flag = running_flag;
+
+	}
+
+	public boolean getRunning_flag() {
+		return this.running_flag;
+	}
+
+	@Override
+	protected void onPreExecute() {
+		setRunning_flag(true);
+	}
+
+	@Override
+	protected void onPostExecute(Boolean result) {
+		setRunning_flag(false);
+		super.onPostExecute(result);
+	}
+
+	@Override
+	protected void onProgressUpdate(Void... values) {
+		super.onProgressUpdate(values);
+	}
+
+	
 }
