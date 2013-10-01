@@ -115,7 +115,7 @@ public class BluetoothHandler extends AsyncTask<Void, Void, Void> {
 	     
 	        while(true)
 	        {
-	        	Log.d("DEBUG", "Trying to read");
+	        	Log.i("DEBUG", "Trying to read");
 	            try
 	            {
 	                bytes = mmInput.read(buffer);
@@ -130,23 +130,31 @@ public class BluetoothHandler extends AsyncTask<Void, Void, Void> {
 
 	    public void write(byte[] bytes)
 	    {  
+	    		Log.i("DEBUG", "starting sending shit");
 	        try
 	        {
 	            mmOutput.write(bytes);
-	            Log.d("DEBUG", "Bytes Sent");
+	            Log.i("DEBUG", "Bytes Sent");
+	            try {
+	    			TimeUnit.MILLISECONDS.sleep(450);
+	    		} catch (InterruptedException e) {
+	    			e.printStackTrace();
+	    		}
+	            mmOutput.flush();	            
 	        }
-	        catch (IOException e) { Log.d("DEBUG", "Bytes Not Sent"); }
+	        
+	        catch (IOException e) { Log.i("DEBUG", "Bytes Not Sent"); }
 	    }
 
 	    public void cancel()
 	    {
 	        try
 	        {
-	            Log.d("DEBUG", "Attempting to Close ConnectedThread Socket");
+	            Log.i("DEBUG", "Attempting to Close ConnectedThread Socket");
 	            mmSocket.close();
-	            Log.d("DEBUG", "ConnectedThread Socket Closed");
+	            Log.i("DEBUG", "ConnectedThread Socket Closed");
 	        }
-	        catch(IOException e) { Log.d("DEBUG", "ConnectedThread Failed To Close"); }
+	        catch(IOException e) { Log.i("DEBUG", "ConnectedThread Failed To Close"); }
 	    }
 
 	}

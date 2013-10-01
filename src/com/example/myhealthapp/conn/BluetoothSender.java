@@ -45,7 +45,8 @@ public class BluetoothSender extends BluetoothHandler {
 
 		Set<BluetoothDevice> devices = GetDevices(mBluetoothAdapter);
 		for (BluetoothDevice bt : devices) {
-			if (bt.getName().equals("Xperia S")) {
+			Log.i("DEBUG", bt.getName() + bt.getAddress() + bt.getBondState());
+			if (bt.getName().equals("GT-I9505")) {
 				ConnectThread bluetoothconnector = new ConnectThread(bt);
 				bluetoothconnector.start();
 			}
@@ -57,9 +58,11 @@ public class BluetoothSender extends BluetoothHandler {
 	@Override
 	public void manageConnectedSocket(BluetoothSocket socket){
 		ConnectedThread connection = new ConnectedThread(socket);
-		String testdata = "tester de testtest";
+		String testdata = "Hoi Arjan :D";
+		String testdata2 = "Alweer een gehackte string";
 		connection.write(testdata.getBytes());
-		connection.run();
+		connection.write(testdata2.getBytes());
+//		connection.run();
 	}
 
 	private class ConnectThread extends Thread {
