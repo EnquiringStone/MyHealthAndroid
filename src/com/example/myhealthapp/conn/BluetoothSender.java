@@ -16,16 +16,16 @@ import android.util.Log;
 import android.widget.Toast;
 
 public class BluetoothSender extends BluetoothHandler {
-	
+
 	private ConnectedThread connection = null;
-	String data;
+	String data = "";
 
 	public BluetoothSender(Activity a) {
 		super(a);
 	}
-	
-	public void cancelConnection(){
-		if (connection != null){
+
+	public void cancelConnection() {
+		if (connection != null) {
 			connection.cancel();
 			connection = null;
 		}
@@ -50,13 +50,12 @@ public class BluetoothSender extends BluetoothHandler {
 			}
 		}
 		Log.i("DEBUG", "I'm here with var: " + mBluetoothAdapter.getScanMode());
-		// AcceptThread bluetoothListener = new AcceptThread();
-		// bluetoothListener.start();
 
 		Set<BluetoothDevice> devices = GetDevices(mBluetoothAdapter);
 		for (BluetoothDevice bt : devices) {
 			Log.i("DEBUG", bt.getName() + bt.getAddress() + bt.getBondState());
-			if (bt.getName().equals("GT-I9505") || bt.getName().equalsIgnoreCase("Galaxy S4 Arjan")) {
+			if (bt.getName().equals("GT-I9505")
+					|| bt.getName().equalsIgnoreCase("Galaxy S4 Arjan")) {
 				ConnectThread bluetoothconnector = new ConnectThread(bt);
 				bluetoothconnector.start();
 			}
@@ -64,23 +63,41 @@ public class BluetoothSender extends BluetoothHandler {
 		return null;
 
 	}
-	
-	public void setData(String data){
-		this.data = data;
+
+	/*
+	 * Returns wheter it passed or failed
+	 */
+	public boolean setData(String data) {
+		if (this.data.equals("")) {
+			this.data = data;
+			return true;
+		}
+		return false;
 	}
-	
-	public String getData(){
-		return this.data;
+
+	public String getData() {
+		String tmp = new String(this.data);
+		this.data = "";
+		return tmp;
 	}
-	
+
 	@Override
-	public void manageConnectedSocket(BluetoothSocket socket){
+	public void manageConnectedSocket(BluetoothSocket socket) {
 		connection = new ConnectedThread(socket);
-		setData("Hoi Arjan :D");		
-		connection.write(data.getBytes());
-//		setData("Alweer een gehackte string");
-//		connection.write(data.getBytes());
-//		connection.run();
+		while (socket.isConnected()) {			
+			String s = getData();
+			if (!s.equals("")) {
+				Log.i("DEBUG", "Were sending the data");
+				connection.write(s.getBytes());
+			} else {
+				try {
+					TimeUnit.MILLISECONDS.sleep(450);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+
 	}
 
 	private class ConnectThread extends Thread {

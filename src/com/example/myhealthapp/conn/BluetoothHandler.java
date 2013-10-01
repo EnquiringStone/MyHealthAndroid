@@ -40,7 +40,14 @@ public class BluetoothHandler extends AsyncTask<Void, Void, Void> {
 		}
 
 	}
-
+	
+	/*
+	 * Needs to be overridden
+	 */
+	public boolean setData(String s){
+		return false;
+	}
+	
 	public void addToBluetoothResults(String result){
 		bluetoothresults.add(result);		
 	}
@@ -161,16 +168,12 @@ public class BluetoothHandler extends AsyncTask<Void, Void, Void> {
 			try {
 				mmOutput.write(bytes);
 				Log.i("DEBUG", "Bytes Sent");
-				try {
-					TimeUnit.MILLISECONDS.sleep(450);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
 				mmOutput.flush();
 			}
 
 			catch (IOException e) {
 				Log.i("DEBUG", "Bytes Not Sent");
+				cancel();
 			}
 		}
 

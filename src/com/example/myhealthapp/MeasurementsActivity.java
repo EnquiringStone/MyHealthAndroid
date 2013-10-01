@@ -1,5 +1,6 @@
 package com.example.myhealthapp;
 
+import java.util.Random;
 import java.util.Set;
 
 import com.example.myhealthapp.conn.BluetoothHandler;
@@ -42,7 +43,21 @@ public class MeasurementsActivity extends Activity {
 						handler.execute();
 					}
 				});
+		
+		findViewById(R.id.randomBtn).setOnClickListener(
+				new View.OnClickListener() {
+					@Override
+					public void onClick(View view) {
+						Random rndm = new Random();
+						
+						String string = "" + rndm.nextInt();
+						handler.setData(string);
+						Log.i("DEBUG", "Were setting the data");
+					}
+				});
 	}
+	
+
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
