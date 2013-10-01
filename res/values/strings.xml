@@ -12,5 +12,6 @@
     <string name="Host">Host</string>
     <string name="Recieve">Recieve</string>
     <string name="Send">Send</string>
+    <string name="GenerateData">GenerateData</string>
 
 </resources>
