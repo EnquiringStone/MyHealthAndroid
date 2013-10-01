@@ -151,7 +151,7 @@ public class BluetoothHandler extends AsyncTask<Void, Void, Void> {
 					string = string.split(""
 							+ string.charAt(string.length() - 1))[0];
 					Log.d("DEBUG", "Received : " + string);
-					Toast.makeText(activity, string, Toast.LENGTH_LONG).show();
+					
 					addToBluetoothResults(string);
 				}
 

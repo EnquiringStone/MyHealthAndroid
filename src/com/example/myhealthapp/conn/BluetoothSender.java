@@ -80,7 +80,6 @@ public class BluetoothSender extends BluetoothHandler {
 		connection.write(data.getBytes());
 		setData("Alweer een gehackte string");
 		connection.write(data.getBytes());
-		connection.cancel();
 //		connection.run();
 	}
 

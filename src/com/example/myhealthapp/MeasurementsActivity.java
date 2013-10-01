@@ -12,6 +12,7 @@ import android.bluetooth.BluetoothDevice;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.widget.Toast;
 
 public class MeasurementsActivity extends Activity {
 
@@ -28,7 +29,7 @@ public class MeasurementsActivity extends Activity {
 				new View.OnClickListener() {
 					@Override
 					public void onClick(View view) {
-						BluetoothSender handler = new BluetoothSender(self);
+						handler = new BluetoothSender(self);
 						handler.execute();
 					}
 				});
@@ -37,7 +38,7 @@ public class MeasurementsActivity extends Activity {
 				new View.OnClickListener() {
 					@Override
 					public void onClick(View view) {
-						BluetoothListener handler = new BluetoothListener(self);
+						handler = new BluetoothListener(self);
 						handler.execute();
 					}
 				});
@@ -53,8 +54,11 @@ public class MeasurementsActivity extends Activity {
 	@Override
 	public void onBackPressed(){
 		try{
-			handler.DisableBluetooth();
-			finish();
+			if (handler != null){
+				handler.DisableBluetooth();
+				handler = null;
+				finish();
+			}
 		}
 		catch (Exception e){
 			Log.e("ERROR", "Something went wrong " + e);
