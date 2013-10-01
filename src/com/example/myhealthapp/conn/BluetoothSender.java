@@ -18,6 +18,7 @@ import android.widget.Toast;
 public class BluetoothSender extends BluetoothHandler {
 	
 	private ConnectedThread connection = null;
+	String data;
 
 	public BluetoothSender(Activity a) {
 		super(a);
@@ -55,7 +56,7 @@ public class BluetoothSender extends BluetoothHandler {
 		Set<BluetoothDevice> devices = GetDevices(mBluetoothAdapter);
 		for (BluetoothDevice bt : devices) {
 			Log.i("DEBUG", bt.getName() + bt.getAddress() + bt.getBondState());
-			if (bt.getName().equals("GT-I9505")) {
+			if (bt.getName().equals("GT-I9505") || bt.getName().equalsIgnoreCase("Galaxy S4 Arjan")) {
 				ConnectThread bluetoothconnector = new ConnectThread(bt);
 				bluetoothconnector.start();
 			}
@@ -64,13 +65,22 @@ public class BluetoothSender extends BluetoothHandler {
 
 	}
 	
+	public void setData(String data){
+		this.data = data;
+	}
+	
+	public String getData(){
+		return this.data;
+	}
+	
 	@Override
 	public void manageConnectedSocket(BluetoothSocket socket){
 		connection = new ConnectedThread(socket);
-		String testdata = "Hoi Arjan :D";
-		String testdata2 = "Alweer een gehackte string";
-		connection.write(testdata.getBytes());
-		connection.write(testdata2.getBytes());
+		setData("Hoi Arjan :D");		
+		connection.write(data.getBytes());
+		setData("Alweer een gehackte string");
+		connection.write(data.getBytes());
+		connection.cancel();
 //		connection.run();
 	}
 
