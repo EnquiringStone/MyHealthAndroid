@@ -28,7 +28,7 @@ public class MeasurementsActivity extends Activity {
 				new View.OnClickListener() {
 					@Override
 					public void onClick(View view) {
-						BluetoothSender handler = new BluetoothSender(self);
+						handler = new BluetoothSender(self);
 						handler.execute();
 					}
 				});
@@ -37,7 +37,7 @@ public class MeasurementsActivity extends Activity {
 				new View.OnClickListener() {
 					@Override
 					public void onClick(View view) {
-						BluetoothListener handler = new BluetoothListener(self);
+						handler = new BluetoothListener(self);
 						handler.execute();
 					}
 				});
