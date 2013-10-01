@@ -23,8 +23,6 @@ public class BluetoothHandler extends AsyncTask<Void, Void, Void> {
 	BluetoothServerSocket mBluetoothSocket;
 	UUID UUID_RFCOMM_GENERIC = UUID
 			.fromString("00001101-0000-1000-8000-00805F9B34FB");
-	
-	final private String TAG = "BluetoothHandler";
 
 	public BluetoothHandler(Activity a) {
 		mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -84,11 +82,9 @@ public class BluetoothHandler extends AsyncTask<Void, Void, Void> {
 	}
 
 	public void manageConnectedSocket(BluetoothSocket socket) {
-
+		
 	}
 
-
-	
 	class ConnectedThread extends Thread {
 
 	    private final BluetoothSocket mmSocket;
@@ -119,10 +115,11 @@ public class BluetoothHandler extends AsyncTask<Void, Void, Void> {
 
 	        while(true)
 	        {
+	        	Log.d("DEBUG", "Trying to read");
 	            try
 	            {
 	                bytes = mmInput.read(buffer);
-	                Log.d(TAG, "Received : "+bytes);
+	                Log.d("DEBUG", "Received : "+bytes);
 	            }
 	            catch(IOException e) { break; }
 	        }
@@ -133,20 +130,20 @@ public class BluetoothHandler extends AsyncTask<Void, Void, Void> {
 	        try
 	        {
 	            mmOutput.write(bytes);
-	            Log.d(TAG, "Bytes Sent");
+	            Log.d("DEBUG", "Bytes Sent");
 	        }
-	        catch (IOException e) { Log.d(TAG, "Bytes Not Sent"); }
+	        catch (IOException e) { Log.d("DEBUG", "Bytes Not Sent"); }
 	    }
 
 	    public void cancel()
 	    {
 	        try
 	        {
-	            Log.d(TAG, "Attempting to Close ConnectedThread Socket");
+	            Log.d("DEBUG", "Attempting to Close ConnectedThread Socket");
 	            mmSocket.close();
-	            Log.d(TAG, "ConnectedThread Socket Closed");
+	            Log.d("DEBUG", "ConnectedThread Socket Closed");
 	        }
-	        catch(IOException e) { Log.d(TAG, "ConnectedThread Failed To Close"); }
+	        catch(IOException e) { Log.d("DEBUG", "ConnectedThread Failed To Close"); }
 	    }
 
 	}

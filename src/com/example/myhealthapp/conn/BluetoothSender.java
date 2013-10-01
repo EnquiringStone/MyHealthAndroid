@@ -1,8 +1,12 @@
 package com.example.myhealthapp.conn;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
+
+import com.example.myhealthapp.conn.BluetoothHandler.ConnectedThread;
 
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
@@ -49,6 +53,14 @@ public class BluetoothSender extends BluetoothHandler {
 		return null;
 
 	}
+	
+	@Override
+	public void manageConnectedSocket(BluetoothSocket socket){
+		ConnectedThread connection = new ConnectedThread(socket);
+		String testdata = "tester de testtest";
+		connection.write(testdata.getBytes());
+		connection.run();
+	}
 
 	private class ConnectThread extends Thread {
 		private final BluetoothSocket mmSocket;
@@ -79,7 +91,7 @@ public class BluetoothSender extends BluetoothHandler {
 				// Connect the device through the socket. This will block
 				// until it succeeds or throws an exception
 				mmSocket.connect();
-				Log.i("DEBUG", "Houston, we got connected");
+				Log.i("DEBUG", "Houston, we got connected with the listener");
 			} catch (IOException connectException) {
 				// Unable to connect; close the socket and get out
 				try {
