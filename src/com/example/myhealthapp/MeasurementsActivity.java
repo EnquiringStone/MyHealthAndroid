@@ -14,17 +14,15 @@ import android.view.Menu;
 
 public class MeasurementsActivity extends Activity {
 	
-	BluetoothListener btListener;
-	BluetoothSender btSender;
+	BluetoothHandler handler;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_measurements);
-		BluetoothListener btListener = new BluetoothListener(this);
-		BluetoothSender btSender = new BluetoothSender(this);
-		btListener.execute();
-//		btSender.execute();
+		handler = new BluetoothListener(this);
+		//handler = new BluetoothSender(this);
+		handler.execute();
 	}
 
 	@Override
@@ -32,6 +30,18 @@ public class MeasurementsActivity extends Activity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.measurements, menu);
 		return true;
+	}
+	
+	@Override
+	public void onBackPressed(){
+		try{
+			handler.DisableBluetooth();
+			finish();
+		}
+		catch (Exception e){
+			Log.e("ERROR", "Something went wrong " + e);
+		}
+		super.onBackPressed();
 	}
 
 }

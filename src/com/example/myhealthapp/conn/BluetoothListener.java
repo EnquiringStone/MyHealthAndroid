@@ -15,10 +15,22 @@ import android.util.Log;
 import android.widget.Toast;
 
 public class BluetoothListener extends BluetoothHandler {
+	
+	private AcceptThread bluetoothListener = null;
+	private ConnectedThread connection = null;
 
 	public BluetoothListener(Activity a) {
 		super(a);
 		// TODO Auto-generated constructor stub
+	}
+	
+	public void cancelConnection(){
+		if (connection != null){
+			//bluetoothListener.cancel();
+			connection.cancel();
+			//bluetoothListener = null;
+			connection = null;
+		}
 	}
 
 	@Override
@@ -38,7 +50,7 @@ public class BluetoothListener extends BluetoothHandler {
 				e.printStackTrace();
 			}
 		}
-		AcceptThread bluetoothListener = new AcceptThread();
+		bluetoothListener = new AcceptThread();
 		bluetoothListener.start();
 		return null;
 
@@ -46,7 +58,7 @@ public class BluetoothListener extends BluetoothHandler {
 	
 	@Override
 	public void manageConnectedSocket(BluetoothSocket socket){
-		ConnectedThread connection = new ConnectedThread(socket);
+		connection = new ConnectedThread(socket);
 		connection.run();
 	}
 

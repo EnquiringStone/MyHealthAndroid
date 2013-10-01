@@ -58,6 +58,12 @@ public class BluetoothHandler extends AsyncTask<Void, Void, Void> {
 			activity.startActivityForResult(enableBtIntent, 0);
 		}
 	}
+	
+	public void DisableBluetooth(){
+		if (mBluetoothAdapter.isEnabled()) {
+		    mBluetoothAdapter.disable(); 
+		} 
+	}
 
 	public void MakeDiscoverable(Activity a) {
 		Intent discoverableIntent = new Intent(
@@ -82,6 +88,10 @@ public class BluetoothHandler extends AsyncTask<Void, Void, Void> {
 	}
 
 	public void manageConnectedSocket(BluetoothSocket socket) {
+		
+	}
+	
+	public void cancelConnection(){
 		
 	}
 
@@ -151,6 +161,8 @@ public class BluetoothHandler extends AsyncTask<Void, Void, Void> {
 	        try
 	        {
 	            Log.i("DEBUG", "Attempting to Close ConnectedThread Socket");
+	            mmInput.close();
+	            mmOutput.close();
 	            mmSocket.close();
 	            Log.i("DEBUG", "ConnectedThread Socket Closed");
 	        }
@@ -158,4 +170,5 @@ public class BluetoothHandler extends AsyncTask<Void, Void, Void> {
 	    }
 
 	}
+
 }

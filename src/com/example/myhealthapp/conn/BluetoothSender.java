@@ -16,9 +16,18 @@ import android.util.Log;
 import android.widget.Toast;
 
 public class BluetoothSender extends BluetoothHandler {
+	
+	private ConnectedThread connection = null;
 
 	public BluetoothSender(Activity a) {
 		super(a);
+	}
+	
+	public void cancelConnection(){
+		if (connection != null){
+			connection.cancel();
+			connection = null;
+		}
 	}
 
 	@Override
@@ -57,7 +66,7 @@ public class BluetoothSender extends BluetoothHandler {
 	
 	@Override
 	public void manageConnectedSocket(BluetoothSocket socket){
-		ConnectedThread connection = new ConnectedThread(socket);
+		connection = new ConnectedThread(socket);
 		String testdata = "Hoi Arjan :D";
 		String testdata2 = "Alweer een gehackte string";
 		connection.write(testdata.getBytes());
