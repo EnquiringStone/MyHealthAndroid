@@ -11,20 +11,36 @@ import android.app.Activity;
 import android.bluetooth.BluetoothDevice;
 import android.util.Log;
 import android.view.Menu;
+import android.view.View;
 
 public class MeasurementsActivity extends Activity {
-	
-	BluetoothListener btListener;
-	BluetoothSender btSender;
+
+	BluetoothHandler handler;
+	MeasurementsActivity self;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_measurements);
-		BluetoothListener btListener = new BluetoothListener(this);
-		BluetoothSender btSender = new BluetoothSender(this);
-		btListener.execute();
-//		btSender.execute();
+		self = this;
+
+		findViewById(R.id.sendbtn).setOnClickListener(
+				new View.OnClickListener() {
+					@Override
+					public void onClick(View view) {
+						BluetoothSender handler = new BluetoothSender(self);
+						handler.execute();
+					}
+				});
+
+		findViewById(R.id.recievebtn).setOnClickListener(
+				new View.OnClickListener() {
+					@Override
+					public void onClick(View view) {
+						BluetoothListener handler = new BluetoothListener(self);
+						handler.execute();
+					}
+				});
 	}
 
 	@Override
