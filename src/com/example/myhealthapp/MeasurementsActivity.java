@@ -55,6 +55,7 @@ public class MeasurementsActivity extends Activity {
 	public void onBackPressed(){
 		try{
 			if (handler != null){
+				handler.cancelConnection();
 				handler.DisableBluetooth();
 				handler = null;
 				finish();
