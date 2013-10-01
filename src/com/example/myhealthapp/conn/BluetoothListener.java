@@ -23,7 +23,6 @@ public class BluetoothListener extends BluetoothHandler {
 
 	@Override
 	protected Void doInBackground(Void... params) {
-		Log.i("DEBUG", "" + mBluetoothAdapter.getScanMode());
 		if (!DeviceHasBluetooth()) {
 			Toast.makeText(activity, "device does not support bluetooth",
 					Toast.LENGTH_LONG).show();
@@ -39,7 +38,6 @@ public class BluetoothListener extends BluetoothHandler {
 				e.printStackTrace();
 			}
 		}
-		Log.i("DEBUG", "I'm here with var: " + mBluetoothAdapter.getScanMode());
 		AcceptThread bluetoothListener = new AcceptThread();
 		bluetoothListener.start();
 		return null;
@@ -72,10 +70,11 @@ public class BluetoothListener extends BluetoothHandler {
 			while (true) {
 				Log.i("DEBUG", "I'm listening");
 				try {
+					Log.i("DEBUG", "Ready to accept");
 					socket = mmServerSocket.accept();
-					Log.d("DEBUG", "connection accepted");
+					Log.i("DEBUG", "connection accepted");
 				} catch (IOException e) {
-					Log.d("DEBUG", "it broke?");
+					Log.i("DEBUG", "it broke?");
 					break;
 				}
 				

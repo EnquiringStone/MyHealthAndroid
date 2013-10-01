@@ -112,15 +112,18 @@ public class BluetoothHandler extends AsyncTask<Void, Void, Void> {
 	    {
 	        byte[] buffer = new byte[1024];
 	        int bytes;
-
+	     
 	        while(true)
 	        {
 	        	Log.d("DEBUG", "Trying to read");
 	            try
 	            {
 	                bytes = mmInput.read(buffer);
-	                Log.d("DEBUG", "Received : "+bytes);
+	                String string = new String(buffer);
+	                string = string.split(""+string.charAt(string.length()-1))[0];
+	                Log.d("DEBUG", "Received : "+ string);
 	            }
+	            
 	            catch(IOException e) { break; }
 	        }
 	    }
