@@ -1,5 +1,6 @@
 package com.example.myhealthapp.db;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -44,8 +45,7 @@ public class Database extends SQLiteOpenHelper{
 
 	@Override
 	public void onUpgrade(SQLiteDatabase database, int oldVersion, int newVersion) {
-		// TODO Auto-generated method stub
-		
+		// TODO Auto-generated method stub	
 	}
 	
 	/**
@@ -62,6 +62,16 @@ public class Database extends SQLiteOpenHelper{
 		catch(SQLException e){
 			Log.e("Database", "Query was not succesful: " + e);
 		}
+	}
+	
+	/**
+	 * Checks if database file is created
+	 * 
+	 * @return boolean, dbFileExists
+	 */
+	public boolean databaseExists() {
+		 File dbFile = context.getDatabasePath(DB_NAME);
+		 return dbFile.exists();
 	}
 	
 	/**
