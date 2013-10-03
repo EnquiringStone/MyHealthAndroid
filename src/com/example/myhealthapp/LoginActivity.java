@@ -2,6 +2,9 @@ package com.example.myhealthapp;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
+
+import com.example.myhealthapp.conn.RequestHandler;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -138,5 +141,4 @@ public class LoginActivity extends Activity {
 			}
 		}
 	}
-
 }
