@@ -80,18 +80,14 @@ public class BluetoothListener extends BluetoothHandler {
 		public void run() {
 			BluetoothSocket socket = null;
 			while (true) {
-				Log.i("DEBUG", "I'm listening");
 				try {
-					Log.i("DEBUG", "Ready to accept");
 					socket = mmServerSocket.accept();
-					Log.i("DEBUG", "connection accepted");
 				} catch (IOException e) {
-					Log.i("DEBUG", "it broke?");
 					break;
 				}
 				
 				if (socket != null) {
-					Log.i("DEBUG", "Housten, we got connection!");
+					Log.i("DEBUG", "Connection established");
 					manageConnectedSocket(socket);
 					try {
 						mmServerSocket.close();

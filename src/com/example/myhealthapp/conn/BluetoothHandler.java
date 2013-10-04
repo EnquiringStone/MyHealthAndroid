@@ -152,13 +152,10 @@ public class BluetoothHandler extends AsyncTask<Void, Void, Void> {
 			int bytes;
 
 			while (true) {
-				Log.i("DEBUG", "Trying to read");
 				try {
 					bytes = mmInput.read(buffer);
-					Log.i("DEBUG", "bytes: "+bytes);
 					String string = new String(buffer);
 					string = string.substring(0, bytes);
-					Log.d("DEBUG", "Received : " + string);
 					
 					addToBluetoothResults(string);
 				}
@@ -170,16 +167,12 @@ public class BluetoothHandler extends AsyncTask<Void, Void, Void> {
 		}
 
 		public void write(byte[] bytes) {
-			Log.i("DEBUG", "starting sending shit");
 			try {
 				mmOutput.write(bytes);
-				
-				Log.i("DEBUG", new String(bytes) + "Sent");
 				mmOutput.flush();				
 			}
 
 			catch (IOException e) {
-				Log.i("DEBUG", "Bytes Not Sent");
 				cancel();
 			}
 		}

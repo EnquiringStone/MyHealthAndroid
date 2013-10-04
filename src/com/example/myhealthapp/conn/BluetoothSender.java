@@ -1,12 +1,8 @@
 package com.example.myhealthapp.conn;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
-
-import com.example.myhealthapp.conn.BluetoothHandler.ConnectedThread;
 
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
@@ -33,7 +29,6 @@ public class BluetoothSender extends BluetoothHandler {
 
 	@Override
 	protected Void doInBackground(Void... params) {
-		Log.i("DEBUG", "" + mBluetoothAdapter.getScanMode());
 		if (!DeviceHasBluetooth()) {
 			Toast.makeText(activity, "device does not support bluetooth",
 					Toast.LENGTH_LONG).show();
@@ -49,11 +44,9 @@ public class BluetoothSender extends BluetoothHandler {
 				e.printStackTrace();
 			}
 		}
-		Log.i("DEBUG", "I'm here with var: " + mBluetoothAdapter.getScanMode());
 
 		Set<BluetoothDevice> devices = GetDevices(mBluetoothAdapter);
 		for (BluetoothDevice bt : devices) {
-			Log.i("DEBUG", bt.getName() + bt.getAddress() + bt.getBondState());
 			if (bt.getName().equals("GT-I9505")
 					|| bt.getName().equalsIgnoreCase("Galaxy S4 Arjan")) {
 				ConnectThread bluetoothconnector = new ConnectThread(bt);
@@ -87,11 +80,10 @@ public class BluetoothSender extends BluetoothHandler {
 		while (socket.isConnected()) {			
 			String s = getData();
 			if (!s.equals("")) {
-				Log.i("DEBUG", "Were sending the data");
 				connection.write(s.getBytes());
 			} else {
 				try {
-					TimeUnit.MILLISECONDS.sleep(450);
+					TimeUnit.MILLISECONDS.sleep(200);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
@@ -102,13 +94,11 @@ public class BluetoothSender extends BluetoothHandler {
 
 	private class ConnectThread extends Thread {
 		private final BluetoothSocket mmSocket;
-		private final BluetoothDevice mmDevice;
 
 		public ConnectThread(BluetoothDevice device) {
 			// Use a temporary object that is later assigned to mmSocket,
 			// because mmSocket is final
 			BluetoothSocket tmp = null;
-			mmDevice = device;
 
 			// Get a BluetoothSocket to connect with the given BluetoothDevice
 			try {
@@ -129,13 +119,10 @@ public class BluetoothSender extends BluetoothHandler {
 				// Connect the device through the socket. This will block
 				// until it succeeds or throws an exception
 				mmSocket.connect();
-				Log.i("DEBUG", "Houston, we got connected with the listener");
+				Log.i("DEBUG", "Connected to listening device");
 			} catch (IOException connectException) {
 				// Unable to connect; close the socket and get out
-				try {
-					mmSocket.close();
-				} catch (IOException closeException) {
-				}
+				cancel();
 				return;
 			}
 
