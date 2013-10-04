@@ -1,14 +1,10 @@
 package com.example.myhealthapp.conn;
 
 import java.io.IOException;
-import java.util.Set;
 import java.util.concurrent.TimeUnit;
-
-import com.example.myhealthapp.conn.BluetoothHandler.ConnectedThread;
 
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
 import android.util.Log;
@@ -89,11 +85,7 @@ public class BluetoothListener extends BluetoothHandler {
 				if (socket != null) {
 					Log.i("DEBUG", "Connection established");
 					manageConnectedSocket(socket);
-					try {
-						mmServerSocket.close();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
+					cancel();
 					break;
 				}
 			}
