@@ -13,24 +13,30 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 public class BluetoothHandler extends AsyncTask<Void, Void, Void> {
 	Activity activity;
+	ArrayAdapter<String> mArrayAdapter;
 	BluetoothAdapter mBluetoothAdapter;
 	BluetoothServerSocket mBluetoothSocket;
 	LinkedList<String> bluetoothresults;
 	UUID UUID_RFCOMM_GENERIC = UUID
 			.fromString("00001101-0000-1000-8000-00805F9B34FB");
+	
 
 	public BluetoothHandler(Activity a) {
 		mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 		bluetoothresults = new LinkedList<String>();
 		activity = a;
-
+			
 		try {
 			mBluetoothSocket = mBluetoothAdapter
 					.listenUsingRfcommWithServiceRecord("Bluetooth service",
@@ -149,9 +155,9 @@ public class BluetoothHandler extends AsyncTask<Void, Void, Void> {
 				Log.i("DEBUG", "Trying to read");
 				try {
 					bytes = mmInput.read(buffer);
+					Log.i("DEBUG", "bytes: "+bytes);
 					String string = new String(buffer);
-					string = string.split(""
-							+ string.charAt(string.length() - 1))[0];
+					string = string.substring(0, bytes);
 					Log.d("DEBUG", "Received : " + string);
 					
 					addToBluetoothResults(string);
@@ -167,8 +173,9 @@ public class BluetoothHandler extends AsyncTask<Void, Void, Void> {
 			Log.i("DEBUG", "starting sending shit");
 			try {
 				mmOutput.write(bytes);
-				Log.i("DEBUG", "Bytes Sent");
-				mmOutput.flush();
+				
+				Log.i("DEBUG", new String(bytes) + "Sent");
+				mmOutput.flush();				
 			}
 
 			catch (IOException e) {
