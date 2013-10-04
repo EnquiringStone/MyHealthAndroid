@@ -1,7 +1,12 @@
 package com.example.myhealthapp.conn;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -13,19 +18,31 @@ import org.apache.http.HttpStatus;
 import org.apache.http.StatusLine;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
-
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.InputStreamEntity;
+import org.apache.http.entity.mime.HttpMultipartMode;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.entity.mime.content.ContentBody;
+import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.entity.mime.content.StringBody;
+import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.os.AsyncTask;
+import android.os.Environment;
 import android.util.Base64;
+import android.util.Log;
 
-public class RequestHandler extends AsyncTask<String, Void, Boolean> {
+public class RequestHandler extends AsyncTask<File, Void, Boolean> {
 
 	URI url = null;
-	public String host = "https://145.37.72.146:1234";
+	public String host = "https://145.37.50.69";
 	String params = "";
 	String response = "";
 	public Boolean running_flag = false;
 	public String token = "";
+	private String loginToken="";
+	private String name="";
 
 	public RequestHandler(){
 		try {
@@ -50,6 +67,30 @@ public class RequestHandler extends AsyncTask<String, Void, Boolean> {
 	public void setParams(String params) {
 		this.params = params;
 	}
+	
+	public void setLoginToken(String loginToken)
+	{
+		try
+		{
+			this.loginToken=encode(loginToken);
+		}
+		catch(UnsupportedEncodingException e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	public void setName(String name)
+	{
+		try
+		{
+			this.name=encode(name);
+		}
+		catch(UnsupportedEncodingException e)
+		{
+			e.printStackTrace();
+		}
+	}
 
 	public void callWebService() throws IOException {
 		HttpClient httpclient = MySSLSocketFactory.getNewHttpClient();
@@ -65,6 +106,27 @@ public class RequestHandler extends AsyncTask<String, Void, Boolean> {
 			this.response = out.toString();
 			this.setRunning_flag(false);
 		}
+	}
+	
+	public void uploadFile(File file) throws IOException {
+		HttpClient httpclient = MySSLSocketFactory.getNewHttpClient();
+		HttpPost httpPost = new HttpPost(this.host + "/api");
+		if(file.exists()) Log.d("DEBUG", "file exists...");
+		MultipartEntityBuilder multipartEntity = MultipartEntityBuilder.create();        
+	    multipartEntity.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+	    multipartEntity.addPart("file", new FileBody(file));
+	    multipartEntity.addTextBody("login_token", loginToken);
+	    multipartEntity.addTextBody("name", name);
+	    multipartEntity.addTextBody("method", encode("uploadFile"));
+	    httpPost.setEntity(multipartEntity.build());
+		HttpResponse execute = httpclient.execute(httpPost);
+		InputStream content = execute.getEntity().getContent();
+		BufferedReader buffer = new BufferedReader(
+			new InputStreamReader(content));
+		String s = "";
+		while ((s = buffer.readLine()) != null)
+			response += s;
+		Log.d("DEBUG", "response: "+response);
 	}
 
 	public String encode(String value) throws UnsupportedEncodingException {
@@ -83,9 +145,12 @@ public class RequestHandler extends AsyncTask<String, Void, Boolean> {
 	}
 
 	@Override
-	protected Boolean doInBackground(String... arg0) {
+	protected Boolean doInBackground(File... arg0) {
 		try {
-			callWebService();
+			if(arg0.length>0)
+				uploadFile(arg0[0]);
+			else
+				callWebService();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
