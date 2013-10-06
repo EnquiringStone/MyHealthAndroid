@@ -14,4 +14,6 @@
     <string name="Send">Send</string>
     <string name="GenerateData">GenerateData</string>
 
+    <string name="urine_test_take_picture">Take picture of urinetest</string>
+    <string name="urine_test_instructions">When taking a picture of the urinetest, please make sure the test is placed vertically and that the background is either white or black</string>
 </resources>

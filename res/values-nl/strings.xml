@@ -5,5 +5,8 @@
     <string name="action_settings">Instellingen</string>
     <string name="hello_world">Hallo wereld!</string>
     <string name="title_activity_menu">MenuActivity</string>
+    
+    <string name="urine_test_take_picture">Neem foto van urinetest</string>
+    <string name="urine_test_instructions">Wanneer u een foto maakt van de urinetest, zorg er voor dat deze er verticaal op staat en dat de achtergrond wit of zwart is</string>
 
 </resources>

@@ -8,17 +8,22 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".UrinetestActivity" >
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
-    
+
     <Button
         android:id="@+id/btnCapture"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Take a picture of urinetest" 
+        android:text="@+id/urine_test_take_picture" 
         android:onClick="takePicture"
         />
+
+    <TextView
+        android:id="@+id/urineTestInstructions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/btnCapture"
+        android:fontFamily="sans-serif-light"
+        android:text="@+id/urine_test_instructions" />
 
 </RelativeLayout>
