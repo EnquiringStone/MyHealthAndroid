@@ -1,7 +1,6 @@
 package com.example.myhealthapp;
 
 import java.util.Random;
-import java.util.Set;
 
 import com.example.myhealthapp.conn.BluetoothHandler;
 import com.example.myhealthapp.conn.BluetoothListener;
@@ -9,11 +8,9 @@ import com.example.myhealthapp.conn.BluetoothSender;
 
 import android.os.Bundle;
 import android.app.Activity;
-import android.bluetooth.BluetoothDevice;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
-import android.widget.Toast;
 
 public class MeasurementsActivity extends Activity {
 

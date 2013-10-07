@@ -59,9 +59,8 @@ public class UrinetestActivity extends Activity {
 
 	    if (requestCode == TAKE_PHOTO_CODE && resultCode == RESULT_OK) {
 	        Log.d("DEBUG", "Pic saved, trying to send to server now...");
-	        handler = new RequestHandler();
+	        handler = RequestHandler.getRequestHandler();
 	        handler.setName("urine");
-	        handler.setLoginToken("d0b07285446db6f4cc0a26eb20fb933e");
 	        handler.execute(newFile);
 	        Log.d("DEBUG", "Done!");
 	    }
