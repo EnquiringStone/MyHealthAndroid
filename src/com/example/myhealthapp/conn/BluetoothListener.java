@@ -1,10 +1,15 @@
 package com.example.myhealthapp.conn;
 
 import java.io.IOException;
+import java.io.Serializable;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
+
+import com.example.myhealthapp.conn.BluetoothHandler.ConnectedThread;
 
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
 import android.util.Log;
@@ -14,10 +19,20 @@ public class BluetoothListener extends BluetoothHandler {
 	
 	private AcceptThread bluetoothListener = null;
 	private ConnectedThread connection = null;
+	private static BluetoothListener listener = null;
 
-	public BluetoothListener(Activity a) {
+	private BluetoothListener(Activity a) {
 		super(a);
 		// TODO Auto-generated constructor stub
+	}
+	
+	public static BluetoothListener getInstance(Activity a) {
+	      if (listener != null && a == null){
+			  return listener;
+		  } else{
+			  listener = new BluetoothListener(a);
+			  return listener;
+		  }
 	}
 	
 	public void cancelConnection(){
@@ -26,6 +41,8 @@ public class BluetoothListener extends BluetoothHandler {
 			connection.cancel();
 			//bluetoothListener = null;
 			connection = null;
+			//set listener on null
+			listener = null;
 		}
 	}
 
@@ -85,7 +102,11 @@ public class BluetoothListener extends BluetoothHandler {
 				if (socket != null) {
 					Log.i("DEBUG", "Connection established");
 					manageConnectedSocket(socket);
-					cancel();
+					try {
+						mmServerSocket.close();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
 					break;
 				}
 			}

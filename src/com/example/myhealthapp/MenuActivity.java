@@ -28,7 +28,7 @@ public class MenuActivity extends Activity {
 	}
 	
 	public void goToMeasurementsActivity(View view){
-		Intent intent = new Intent(MenuActivity.this, MeasurementsActivity.class);
+		Intent intent = new Intent(MenuActivity.this, ChooseGraphActivity.class);
 		MenuActivity.this.startActivity(intent);
 	}
 	
