@@ -36,7 +36,7 @@ public class LoginActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		handler = new RequestHandler();
+		handler = RequestHandler.getRequestHandler();
 
 		setContentView(R.layout.activity_login);
 
@@ -118,7 +118,7 @@ public class LoginActivity extends Activity {
 				if (JsonValues.get("error").equals("false")
 						&& JsonValues.get("login_token").length() > 3) {
 					Log.i("DEBUG", "Generating token");
-					handler.token = JsonValues.get("login_token");
+					handler.setLoginToken(JsonValues.get("login_token"));
 					Intent myIntent = new Intent(v.getContext(),
 							MenuActivity.class);
 					Toast.makeText(LoginActivity.this, "Login Successful",

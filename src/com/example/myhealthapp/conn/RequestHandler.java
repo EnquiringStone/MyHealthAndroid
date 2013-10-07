@@ -36,13 +36,26 @@ public class RequestHandler extends AsyncTask<File, Void, Boolean> {
 	public String token = "";
 	private String loginToken="";
 	private String name="";
+	private static RequestHandler instance;
 
-	public RequestHandler(){
+	private RequestHandler(){
 		try {
             Class.forName("android.os.AsyncTask");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
+	}
+	
+	public static RequestHandler getRequestHandler() {
+		if(instance == null) {
+			instance = new RequestHandler();
+		}
+		if(instance.getLoginToken() != "") {
+			String loginToken = instance.getLoginToken();
+			instance = new RequestHandler();
+			instance.loginToken = loginToken;
+		}
+		return instance;
 	}
 
 	public void setHost(String host) {
@@ -71,6 +84,9 @@ public class RequestHandler extends AsyncTask<File, Void, Boolean> {
 		{
 			e.printStackTrace();
 		}
+	}
+	public String getLoginToken() {
+		return this.loginToken;
 	}
 	
 	public void setName(String name)
